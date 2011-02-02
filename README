@@ -1,0 +1,9 @@
+=========
+Clocktest
+=========
+
+Clocktest is a simple test of various CPU- and wall-time functions in
+POSIX. It tests the resolution of the timing function by calling the
+function in a tight loop, and recording when the value changes. From
+this the resolution and call overhead is calculated and printed.
+
