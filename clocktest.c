@@ -35,6 +35,10 @@ void test_clock_gettime(clockid_t clk_id, const char *name)
   int i;
   avg = max = 0;
   min = DBL_MAX;
+
+  clock_getres(clk_id, &ts1);
+  printf("Resolution of %s: %ld s, %ld ns.\n", name, ts1.tv_sec, ts1.tv_nsec);
+
   printf("Testing clock_gettime() with %s\n", name);
   for (i = 0; i < itr; i++)
     {
@@ -275,25 +279,24 @@ void test_gettimeofday()
 
 int main()
 {
-  struct timespec ts;
-
   test_time();
   test_clock();
   test_times();
   test_getrusage();
   test_gettimeofday();
 
-  printf("\nHigh precision clock_gettime() tests:\n");
+  printf("\nHigh precision clock_gettime() tests:\n\n");
 
-  clock_getres(CLOCK_MONOTONIC, &ts);
-  printf("clock_getres(CLOCK_MONOTONIC, ...): %ld s, %ld ns.\n", ts.tv_sec, ts.tv_nsec);
-  clock_getres(CLOCK_REALTIME, &ts);
-  printf("clock_getres(CLOCK_REALTIME, ...): %ld s, %ld ns.\n\n", ts.tv_sec, ts.tv_nsec);
-
-  test_clock_gettime(CLOCK_MONOTONIC, "CLOCK_MONOTONIC");
   test_clock_gettime(CLOCK_REALTIME, "CLOCK_REALTIME");
+#ifdef CLOCK_MONOTONIC
+  test_clock_gettime(CLOCK_MONOTONIC, "CLOCK_MONOTONIC");
+#endif
+#ifdef CLOCK_PROCESS_CPUTIME_ID
   test_clock_gettime(CLOCK_PROCESS_CPUTIME_ID, "CLOCK_PROCESS_CPUTIME_ID");
+#endif
+#ifdef CLOCK_THREAD_CPUTIME_ID
   test_clock_gettime(CLOCK_THREAD_CPUTIME_ID, "CLOCK_THREAD_CPUTIME_ID");
+#endif
 
   return 0;
 }
