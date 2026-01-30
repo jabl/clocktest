@@ -182,15 +182,15 @@ void test_times()
 void test_getrusage()
 {
   struct rusage r1, r2;
-  double minr, minu, mins, maxr, maxu, maxs, avgr, avgu, avgs, curu, curs, ncavg;
+  double minu, mins, maxu, maxs, avgr, avgu, avgs, curu, curs, ncavg;
   long ncalls;
   int i;
 
   printf("\nTesting getrusage()\n");
   ncalls = 0;
 
-  maxr = maxu = maxs = avgr = avgu = avgs = 0;
-  minr = minu = mins = DBL_MAX;
+  maxu = maxs = avgr = avgu = avgs = 0;
+  minu = mins = DBL_MAX;
   for (i = 0; i < itr; i++)
     {
       getrusage(RUSAGE_SELF, &r1);
